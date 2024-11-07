@@ -1,49 +1,75 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Member;
 
+use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class memberController extends Controller
 {
-    //
-    public function member(Request $request){
-        $validatedData = $request->validate([
-            "name"=> "required|max:255",
-            "email"=> "required|email|max:255",
-            "phone"=> "required|max:10",
+    public function index()
+{
+    $member = Member::all();
+    // Or any other query that returns a collection
+    return view('page.Membership', compact('member'));
+
+}
+
+
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:members',
+            'phone' => 'required|string',
+            'password'=>'required|string|min:8|confirmed',
+            'status' => 'required|in:active,inactive',
         ]);
 
-        member::create([
-            "name"=> $validatedData["name"],
-            "email"=> $validatedData["email"],
-            "phone"=> $validatedData["phone"],
-        ]);
-
-        return redirect("member");
-    }
-
-    public function showMembers(){
-        $members=member::all();
-
-
-        return view('page.member', compact('members'));
-    }
-
-    public function show(){
-        $members=member::all();
-
-
-        return view('page.welcome', compact('members'));
+        Member::create($request->all());
+        return redirect()->route('Membership.index');
     }
 
     public function destroy($id)
     {
-        $members = member::findOrFail($id);
-        $members ->delete();
-
-        return redirect()->back();
+        $member = Member::findOrFail($id);
+        $member->delete();
+        return redirect()->route('Membership.index');
     }
+
+    public function edit($id)
+{
+    $member = Member::find($id); // Find member by id
+    return view('page.editMember', compact('member')); // Pass member to the view
 }
 
+    public function update(Request $request, $id)
+    {
+
+        // Validate the input data
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|numeric',
+            'password'=>'nullable',
+            'status' => 'required|in:active,inactive',
+            // Add any other validation rules needed
+        ]);
+
+        // Find the member and update its properties
+        $member = Member::find($id);
+        $member->first_name = $request->input('first_name');
+        $member->last_name = $request->input('last_name');
+        $member->email = $request->input('email');
+        $member->phone = $request->input('phone');
+        $member->status = $request->input('status');
+        $member->save(); // Save the changes
+
+        // Redirect back with a success message
+        return redirect()->route('Membership.index');
+    }
+}

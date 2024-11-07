@@ -5,116 +5,143 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donation - Church Management</title>
     <meta name="description" content="Donation management for the church.">
-    <!-- Bootstrap CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="styles.css"> <!-- Custom styles can be added here -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap/css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <style>
         body {
-            overflow-x: hidden; /* Prevent horizontal scroll */
+            overflow-x: hidden;
         }
-
         #sidebar {
-            width: 250px;
+            height: 100vh;
             position: fixed;
-            height: 100%;
+            top: 0;
+            left: 0;
+            width: 250px;
             background-color: #f8f9fa;
-            padding-top: 20px;
-            transition: all 0.3s; /* Smooth transition */
+            padding: 20px;
+            transition: transform 0.3s ease;
+            transform: translateX(0);
             z-index: 1000;
         }
-
         #content {
-            margin-left: 250px; /* Adjust margin to accommodate the sidebar */
-            transition: margin-left 0.3s; /* Smooth transition */
+            margin-left: 250px;
+            transition: margin-left 0.3s;
         }
-
         #sidebarToggle {
-            display: none; /* Hide toggle button by default */
+            display: none;
         }
-
         @media (max-width: 768px) {
             #sidebar {
-                width: 200px; /* Smaller sidebar on mobile */
-                margin-left: -200px; /* Hide sidebar */
+                width: 200px;
+                margin-left: -200px;
             }
-
             #content {
-                margin-left: 0; /* Adjust content margin */
+                margin-left: 0;
             }
-
             #sidebarToggle {
-                display: block; /* Show toggle button on mobile */
+                display: block;
                 position: absolute;
                 top: 10px;
                 left: 10px;
-                z-index: 2000; /* Ensure it appears above other elements */
+                z-index: 2000;
             }
-
             #sidebar.active {
-                margin-left: 0; /* Show sidebar */
+                margin-left: 0;
             }
-
             #content.active {
-                margin-left: 200px; /* Adjust content margin */
+                margin-left: 200px;
             }
         }
-
         .donation-table th, .donation-table td {
             vertical-align: middle;
         }
     </style>
 </head>
-<body id="page-top">
-    <div id="sidebar">
-        <h3>Catholic</h3>
-        <ul class="navbar-nav flex-column">
-            <li class="nav-item">
-                <a class="nav-link" href="#">Dashboard</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Membership</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Donations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Events</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Library</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Settings</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Logout</a>
-            </li>
-        </ul>
-    </div>
-
-    <div id="content">
-        <button class="btn btn-primary" id="sidebarToggle"><i class="fas fa-bars"></i></button>
-
-        <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
-            <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                <div class="input-group">
-                    <input class="bg-light form-control border-0 small" type="text" placeholder="Search for donations...">
-                    <button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button>
-                </div>
-            </form>
-            <ul class="navbar-nav flex-nowrap ms-auto">
-                <!-- User Information -->
-                <li class="nav-item dropdown no-arrow">
-                    <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#">
-                        <span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span>
-                        <img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg">
-                    </a>
-                </li>
+<div id="wrapper">
+    <!-- Sidebar -->
+    <nav class="navbar navbar-dark align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0">
+        <div class="container-fluid d-flex flex-column p-0">
+            <a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+                <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-church"></i></div>
+                <div class="sidebar-brand-text mx-3"><span>Admin Dashboard</span></div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+                <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
+                <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
             </ul>
-        </nav>
+            <div class="text-center d-none d-md-inline">
+                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+            </div>
+        </div>
+    </nav>
+    <!-- End Sidebar -->
+
+    <div class="d-flex flex-column" id="content-wrapper">
+        <div id="content">
+            <nav class="navbar navbar-light navbar-expand bg-white shadow mb-4 topbar static-top">
+                <div class="container-fluid">
+                    <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
+                            <button class="btn btn-primary py-0" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                    <ul class="navbar-nav flex-nowrap ms-auto">
+                        <!-- Notifications -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                <h6 class="dropdown-header">Alerts Center</h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="me-3">
+                                        <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
+                                    </div>
+                                    <div><span class="small text-gray-500">December 12, 2019</span><p>A new monthly report is ready to download!</p></div>
+                                </a>
+                                <!-- More notifications... -->
+                            </div>
+                        </li>
+                        <!-- Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
+                            <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
+                                <h6 class="dropdown-header">Alerts Center</h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image me-3">
+                                        <img class="rounded-circle" src="/assets/img/avatars/avatar4.jpeg">
+                                        <div class="bg-success status-indicator"></div>
+                                    </div>
+                                    <div class="fw-bold"><div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div><p class="small text-gray-500 mb-0">Emily Fowler - 58m</p></div>
+                                </a>
+                                <!-- More messages... -->
+                            </div>
+                        </li>
+                        <div class="d-none d-sm-block topbar-divider"></div>
+                        <!-- User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
+                            <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
+                                <a class="dropdown-item" href="{{Route('profile')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Settings</a>
+                                <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>Activity log</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Logout</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
         <div class="container-fluid">
             <div class="d-sm-flex justify-content-between align-items-center mb-4">
@@ -124,7 +151,6 @@
                 </button>
             </div>
 
-            <!-- Donation Table -->
             <div class="card shadow mb-4">
                 <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">Current Donations</h6>
@@ -142,27 +168,26 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($donations as $donation)
                                 <tr>
-                                    <td>John Doe</td>
-                                    <td>johndoe@example.com</td>
-                                    <td>$100</td>
-                                    <td>2024-10-01</td>
+                                    <td>{{ $donation->id }}</td>
+                                    <td>{{ $donation->name }}</td>
+                                    <td>{{ $donation->email }}</td>
+                                    <td>{{ $donation->amount }}</td>
+                                    <td>{{ $donation->date }}</td>
                                     <td>
-                                        <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                                        <a href="{{ route('donation.edit', $donation->id) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Edit</a>
+                                        <form action="{{ route('donation.destroy', $donation->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this member?')">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Jane Smith</td>
-                                    <td>janesmith@example.com</td>
-                                    <td>$150</td>
-                                    <td>2024-10-05</td>
-                                    <td>
-                                        <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                                    </td>
-                                </tr>
-                                <!-- Add more donations as needed -->
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -171,7 +196,6 @@
         </div>
     </div>
 
-    <!-- Add Donation Modal -->
     <div class="modal fade" id="addDonationModal" tabindex="-1" aria-labelledby="addDonationModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -180,22 +204,23 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addDonationForm">
+                    <form id="addDonationForm" action="{{route('donation')}}" method="POST">
+                        @csrf
                         <div class="mb-3">
                             <label for="donorName" class="form-label">Donor Name</label>
-                            <input type="text" class="form-control" id="donorName" required>
+                            <input type="text" name="name" class="form-control" id="donorName" required>
                         </div>
                         <div class="mb-3">
                             <label for="donorEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="donorEmail" required>
+                            <input type="email" name="email" class="form-control" id="donorEmail" required>
                         </div>
                         <div class="mb-3">
                             <label for="donationAmount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="donationAmount" required>
+                            <input type="number" name="amount" class="form-control" id="donationAmount" required>
                         </div>
                         <div class="mb-3">
                             <label for="donationDate" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="donationDate" required>
+                            <input type="date" name="date" class="form-control" id="donationDate" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Add Donation</button>
                     </form>
@@ -204,42 +229,14 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle sidebar
-        $('#sidebarToggle').on('click', function() {
-            $('#sidebar').toggleClass('active');
-            $('#content').toggleClass('active');
-        });
-
-        // Add Donation Form Submission
-        $('#addDonationForm').on('submit', function(event) {
-            event.preventDefault();
-            // Get form values
-            const name = $('#donorName').val();
-            const email = $('#donorEmail').val();
-            const amount = $('#donationAmount').val();
-            const date = $('#donationDate').val();
-
-            // Add new donation to the table
-            $('#dataTable tbody').append(`
-                <tr>
-                    <td>${name}</td>
-                    <td>${email}</td>
-                    <td>$${amount}</td>
-                    <td>${date}</td>
-                    <td>
-                        <button class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</button>
-                        <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
-                    </td>
-                </tr>
-            `);
-
-            // Reset form
-            $(this)[0].reset();
-            $('#addDonationModal').modal('hide'); // Hide modal after submission
+        $(document).ready(function () {
+            $('#sidebarToggle').on('click', function () {
+                $('#sidebar').toggleClass('active');
+                $('#content').toggleClass('active');
+            });
         });
     </script>
 </body>

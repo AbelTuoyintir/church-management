@@ -62,7 +62,8 @@
                         <div class="text-center">
                             <h4 class="text-dark mb-4">Welcome Back!</h4>
                         </div>
-                        <form action="#" method="POST">
+                        <form action="{{route('login')}}" method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <input class="form-control form-control-user" type="email" id="exampleInputEmail" placeholder="Enter Email Address..." name="email" required>
                             </div>
@@ -89,7 +90,7 @@
                             <a class="small" href="forgot-password.html">Forgot Password?</a>
                         </div>
                         <div class="text-center">
-                            <a class="small" href="/register.html">Create an Account!</a>
+                            <a class="small" href="{{route('register')}}">Create an Account!</a>
                         </div>
                     </div>
                 </div>

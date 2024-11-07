@@ -12,17 +12,19 @@ class donationController extends Controller
     public function donation(Request $request){
         $validatedData = $request->validate([
             "name"=> "required|max: 255|string",
+            "email"=> "required|max: 255|string|email",
             "amount"=> "required|numeric|min:1",
             "date"=>"required|date"
         ]);
 
         Donation::create([
             "name"=> $validatedData["name"],
+            "email"=> $validatedData["email"],
             "amount"=> $validatedData["amount"],
             "date"=> $validatedData["date"]
         ]);
 
-        return redirect("donation");
+        return redirect()->route('donation.showDonation');
     }
 
     public function showDonation(){
@@ -41,26 +43,29 @@ class donationController extends Controller
 
     public function edit($id) {
         $donation = Donation::findOrFail($id);
-        return view('donations.edit', compact('donation'));
+        return view('page.editDonation', compact('donation'));
     }
 
-    public function update(Request $request, $id) {
-        $request->validate([
-            'name' => 'required|max:255',
-            'amount' => 'required|numeric',
-            'date' => 'required|date',
-        ]);
+    public function update(Request $request, $id)
+    {
 
-        $donation = Donation::findOrFail($id);
-        $donation->update([
-            'name' => $request->name,
-            'amount' => $request->amount,
-            'date' => $request->date,
+        // Validate the input data
+        $validatedData = $request->validate([
+            "name"=> "required|max: 255|string",
+            "email"=> "required|max: 255|string|email",
+            "amount"=> "required|numeric|min:1",
+            "date"=>"required|date"
         ]);
+        // Find the member and update its properties
+        $donation =  donation::find($id);
+        $donation ->name = $request->input('name');
+         $donation->email = $request->input('email');
+         $donation->amount = $request->input('amount');
+         $donation->date = $request->input('date');
+         $donation->save(); // Save the changes
 
-        return redirect()->back();
+        // Redirect back with a success message
+        return redirect()->route('donation.showDonation');
     }
-
-
 
 }

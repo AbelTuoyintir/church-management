@@ -12,6 +12,7 @@ class Donation extends Model
     //
     protected $fillable = [
         "name",
+        "email",
         "amount",
         "date",
     ] ;

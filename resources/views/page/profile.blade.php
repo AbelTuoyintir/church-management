@@ -18,7 +18,7 @@
             <div class="col-lg-4">
                 <div class="card mb-3">
                     <div class="card-body text-center shadow">
-                        <img class="rounded-circle mb-3 mt-4" src="/assets/img/avatars/avatar1.jpeg" width="160" height="160" alt="User Photo">
+                        <img class="rounded-circle mb-3 mt-4" src="/images/img1.jpg" width="160" height="160" alt="User Photo">
                         <div class="mb-3">
                             <button class="btn btn-primary btn-sm" type="button">Change Photo</button>
                         </div>

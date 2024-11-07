@@ -1,61 +1,81 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 
-class AuthController extends Controller
+
+class authController extends Controller
 {
     //
-    public function register(Request $request){
-        $validatedData = $request->validate([
-            'name'=> 'required|max:255|',
-            'email'=> 'required|email|max:255|unique:users',
-            'password'=>'required|min:8|confirmed',
-        ]);
-
-        //create users records
-
-        User::create([
-            'name'=> $validatedData['name'],
-            'email'=> $validatedData['email'],
-            'password'=> bcrypt($validatedData['password']),
-        ]);
-        return redirect()->route('login');
-
+    public function showRegistrationForm()
+    {
+        return view('register');
     }
 
-    public function login(Request $request){
-        $validatedData = $request->validate([
-            'email'=> 'required|email|max:255',
-            'password'=> 'required|min:8',
+    // Handle registration form submission
+    public function register(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        if(Auth::attempt($validatedData, $request->filled('remember'))){
-            return redirect()->route('welcome.page');
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        $user = User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('login');
+    }
+
+    public function login(Request $request)
+    {
+        // Validate login credentials
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // Attempt to authenticate the user
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            // Redirect to the intended page or dashboard
+            return redirect()->route('dashboard'); // replace 'dashboard' with your intended route
+        }
+
+        // Authentication failed, redirect back with error
+        return redirect()->back()->withErrors(['loginError' => 'Invalid email or password'])->withInput();
     }
 
     public function logout(Request $request)
     {
+        // Log the user out
         Auth::logout();
 
+        // Invalidate the session
         $request->session()->invalidate();
 
+        // Regenerate the session token to prevent CSRF attacks
         $request->session()->regenerateToken();
 
-        return redirect('welcome');
+        // Redirect to the login page or home
+        return redirect('login');
     }
-
-    public function showLoginForm(){
-        return view('auth.login');
-    }
-
-
 
 }
