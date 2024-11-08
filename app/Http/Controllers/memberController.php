@@ -10,9 +10,9 @@ class memberController extends Controller
 {
     public function index()
 {
-    $member = Member::all();
+    $members = Member::all();
     // Or any other query that returns a collection
-    return view('page.Membership', compact('member'));
+    return view('page.Membership', compact('members'));
 
 }
 

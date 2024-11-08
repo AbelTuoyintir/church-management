@@ -32,11 +32,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
@@ -243,7 +243,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Recent Members</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                                         <!-- Table for Recent Members -->
                                         <table class="table table-bordered  table-striped">
                                             <thead>
@@ -270,7 +270,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                                         <!-- Table for Upcoming Events -->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -297,15 +297,26 @@
                             <div class="col-lg-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Announcements And News</h6>
                                     </div>
-                                    <div class="card-body">
-                                        <button class="btn btn-primary btn-block">Add New Member</button>
-                                        <button class="btn btn-success btn-block">Create Event</button>
-                                        <button class="btn btn-warning btn-block">Send Announcement</button>
+                                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                        @if($announcements->isEmpty())
+                                            <p>No announcements available.</p>
+                                        @else
+                                            @foreach($announcements as $announcement)
+                                                <div class="announcement-item">
+                                                    <h5>{{ $announcement->title }}</h5>
+                                                    <p>{{ $announcement->message }}</p>
+                                                    <small class="text-muted">Posted on {{ $announcement->created_at->format('F j, Y, g:i a') }}</small>
+                                                    <hr>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                             </div>
+
+
                             <div class="col-lg-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
@@ -326,7 +337,7 @@
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form action="{{ route('events.store') }}" method="POST">
+                                                        <form action="{{ route('events.dashboard') }}" method="POST">
                                                             @csrf
                                                             <div class="mb-3">
                                                                 <label for="eventName" class="form-label">Event Name</label>

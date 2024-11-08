@@ -24,11 +24,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>

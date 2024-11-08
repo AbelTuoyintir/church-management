@@ -23,11 +23,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
@@ -103,35 +103,38 @@
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Add New Event</button>
                 <input type="text" class="form-control w-25" placeholder="Search events">
             </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Event Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example Event -->
-                    @foreach($events   as $event)
+            <div style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                        <td>{{ $event->name }}</td>
-                        <td>{{ $event->date }}</td>
-                        <td>{{ $event->time }}</td>
-                        <td>{{ $event->location }}</td>
-                        <td>{{ $event->status }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">Edit</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                            <button class="btn btn-sm btn-success publish-button">Publish</button> <!-- New Publish button -->
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Example Event -->
+                        @foreach($events as $event)
+                            <tr>
+                                <td>{{ $event->name }}</td>
+                                <td>{{ $event->date }}</td>
+                                <td>{{ $event->time }}</td>
+                                <td>{{ $event->location }}</td>
+                                <td>{{ $event->status }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                    <button class="btn btn-sm btn-success publish-button">Publish</button> <!-- New Publish button -->
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
 
             <!-- Event Modal for Adding/Editing Events -->
             <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
@@ -254,8 +257,18 @@
     </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="{{ asset('assets/js/script.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script>
         // Toggle sidebar collapse
         document.getElementById('sidebarToggleTop').addEventListener('click', function () {

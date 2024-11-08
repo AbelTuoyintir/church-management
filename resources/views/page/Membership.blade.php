@@ -23,11 +23,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
@@ -111,15 +111,22 @@
                     <h6 class="m-0 font-weight-bold text-primary">Current Members</h6>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        @if($members->isEmpty())
+                            <p>No member available.</p>
+                        @else
+                            @foreach($members as $member)
+                                <!-- Display donation rows -->
+                            @endforeach
+                        @endif
                         <table class="table table-bordered membership-table" id="dataTable" width="100%" cellspacing="0">
                             <tbody>
-                                @foreach($member as $member) <!-- Change this line -->
+                                @foreach($members as $member)
                                 <tr>
-                                    <td>{{ $member->id }}</td> <!-- Change members to member -->
-                                    <td>{{ $member->first_name }} {{ $member->last_name }}</td> <!-- Change members to member -->
-                                    <td>{{ $member->email }}</td> <!-- Change members to member -->
-                                    <td>{{ $member->phone }}</td> <!-- Change members to member -->
+                                    <td>{{ $member->id }}</td>
+                                    <td>{{ $member->first_name }} {{ $member->last_name }}</td>
+                                    <td>{{ $member->email }}</td>
+                                    <td>{{ $member->phone }}</td>
                                     <td>
                                         <span class="badge {{ $member->status == 'Active' ? 'bg-success' : 'bg-danger' }}">
                                             {{ $member->status }}
@@ -142,6 +149,7 @@
                             </tbody>
                         </table>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -209,6 +217,8 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="{{ asset('assets/js/script.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
     <script>
         // Toggle sidebar
         $('#sidebarToggle').on('click', function() {
