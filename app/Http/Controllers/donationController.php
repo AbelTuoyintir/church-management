@@ -27,10 +27,13 @@ class donationController extends Controller
         return redirect()->route('donation.showDonation');
     }
 
-    public function showDonation(){
+    public function showDonation()
+    {
+        // Fetch all donations
         $donations = Donation::all();
 
-        return view("page.donation", compact("donations"));
+        // Pass the donations data to the view
+        return view('page.donation', compact('donations'));
     }
 
     public function destroy($id)

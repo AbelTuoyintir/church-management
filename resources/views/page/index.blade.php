@@ -32,11 +32,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
@@ -243,7 +243,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Recent Members</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                                         <!-- Table for Recent Members -->
                                         <table class="table table-bordered  table-striped">
                                             <thead>
@@ -270,7 +270,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
                                     </div>
-                                    <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
                                         <!-- Table for Upcoming Events -->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -297,15 +297,175 @@
                             <div class="col-lg-4">
                                 <div class="card shadow mb-4">
                                     <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                                        <h6 class="m-0 font-weight-bold text-primary">Announcements And News</h6>
                                     </div>
-                                    <div class="card-body">
-                                        <button class="btn btn-primary btn-block">Add New Member</button>
-                                        <button class="btn btn-success btn-block">Create Event</button>
-                                        <button class="btn btn-warning btn-block">Send Announcement</button>
+                                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                                        @if($announcements->isEmpty())
+                                            <p>No announcements available.</p>
+                                        @else
+                                            @foreach($announcements as $announcement)
+                                                <div class="announcement-item">
+                                                    <h5>{{ $announcement->title }}</h5>
+                                                    <p>{{ $announcement->message }}</p>
+                                                    <small class="text-muted">Posted on {{ $announcement->created_at->format('F j, Y, g:i a') }}</small>
+                                                    <hr>
+                                                </div>
+                                            @endforeach
+                                        @endif
                                     </div>
                                 </div>
                             </div>
+
+
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Create Event Button -->
+                                        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#createEventModal">Create Event</button>
+
+                                        <!-- Create Event Modal (Pop-up) -->
+                                        <div class="modal fade" id="createEventModal" tabindex="-1" role="dialog" aria-labelledby="createEventModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="createEventModalLabel">Create New Event</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="{{ route('events.dashboard') }}" method="POST">
+                                                            @csrf
+                                                            <div class="mb-3">
+                                                                <label for="eventName" class="form-label">Event Name</label>
+                                                                <input type="text" class="form-control" name="name" id="eventName" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="eventDate" class="form-label">Date</label>
+                                                                <input type="date" class="form-control" name="date" id="eventDate" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="eventTime" class="form-label">Time</label>
+                                                                <input type="time" class="form-control" name="time" id="eventTime" required>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="eventLocation" class="form-label">Location</label>
+                                                                <input type="text" class="form-control" name="location" id="eventLocation" required>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Save</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Add New Member Button -->
+                                        <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#addMemberModal">Add New Member</button>
+
+                                        <!-- Add New Member Modal (Pop-up) -->
+                                        <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="addMemberModalLabel">Add New Member</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form id="addMemberForm" action="{{route ('Membership.store')}}" method="POST">
+                                                            @csrf
+                                                            <div class="mb-3">
+                                                                <label for="memberName" class="form-label">First Name</label>
+                                                                <input type="text" class="form-control" id="memberName" name="first_name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="memberName" class="form-label">Last Name</label>
+                                                                <input type="text" class="form-control" id="memberName" name="last_name">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="memberEmail" class="form-label">Email</label>
+                                                                <input type="email" class="form-control" id="memberEmail" name="email">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="memberPhone" class="form-label">Phone</label>
+                                                                <input type="text" class="form-control" id="memberPhone" name="phone">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="password" class="form-label hidden">password</label>
+                                                                <input type="text" class="form-control hidden" id="password" name="password" value="12345678">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="password" class="form-label hidden">password</label>
+                                                                <input type="text" class="form-control hidden" id="password" name="password_confirmation" value="12345678">
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="memberStatus" class="form-label">Status</label>
+                                                                <select class="form-select" id="memberStatus" name="status">
+                                                                    <option value="active">Active</option>
+                                                                    <option value="inactive">Inactive</option>
+                                                                </select>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-primary">Add Member</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Quick Actions</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- Send Announcement Button -->
+                                        <button class="btn btn-warning btn-block" data-toggle="modal" data-target="#sendAnnouncementModal">Send Announcement</button>
+
+                                        <!-- Send Announcement Modal (Pop-up) -->
+                                        <div class="modal fade" id="sendAnnouncementModal" tabindex="-1" role="dialog" aria-labelledby="sendAnnouncementModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="sendAnnouncementModalLabel">Send Announcement</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form action="/send-announcement" method="POST">
+                                                            @csrf
+                                                            <div class="form-group">
+                                                                <label for="announcementTitle">Title</label>
+                                                                <input type="text" class="form-control" id="announcementTitle" name="title" required>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="announcementMessage">Message</label>
+                                                                <textarea class="form-control" id="announcementMessage" name="message" rows="4" required></textarea>
+                                                            </div>
+                                                            <button type="submit" class="btn btn-warning">Send Announcement</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                     </div>
@@ -325,6 +485,12 @@
     <!-- Add FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@3.3.2/dist/fullcalendar.min.js"></script>
+    <!-- Add these to your HTML <head> -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <script>
         <script>
     var ctx = document.getElementById('donationsChart').getContext('2d');

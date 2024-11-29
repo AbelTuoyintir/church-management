@@ -7,6 +7,7 @@ use App\Http\Controllers\memberController;
 use App\Http\Controllers\eventController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\rsvpController;
+use App\Http\Controllers\announcementController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -36,6 +37,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');//logo
 
 //routes for dashboard
 Route::get('/admin/dashboard', [dashboardController::class, 'index'])->name('dashboard');
+Route::post('/admin/dashboard/store', [dashboardController::class, 'store'])->name('events.dashboard');
+
 
 
 //members route codes
@@ -47,11 +50,11 @@ Route::put('/admin/members/{id}', [MemberController::class, 'update'])->name('Me
 
 
 //donation routes
-Route::post('/admin/donation',[donationController::class,'donation'])->name('donation');
-Route::delete('/admin/donation/{id}', [DonationController::class, 'destroy'])->name('donation.destroy');
-Route::get('/admin/donation', [donationController::class,'showDonation'])->name('donation.showDonation');
-Route::get('/admin/donation/edit/{id}', [donationController::class, 'edit'])->name('donation.edit');
-Route::put('/admin/donation/{id}', [donationController::class, 'update'])->name('donation.update');
+Route::post('/admin/donations',[donationController::class,'donation'])->name('donation');
+Route::delete('/admin/donations/{id}', [DonationController::class, 'destroy'])->name('donation.destroy');
+Route::get('/admin/donations', [donationController::class,'showDonation'])->name('donation.showDonation');
+Route::get('/admin/donations/edit/{id}', [donationController::class, 'edit'])->name('donation.edit');
+Route::put('/admin/donations/{id}', [donationController::class, 'update'])->name('donation.update');
 
 //route for events
 Route::post('/admin/events/store', [eventController::class, 'store'])->name('events.store');
@@ -70,4 +73,7 @@ Route::delete('/admin/library/{id}', [BookController::class, 'destroy'])->name('
 Route::put('/admin/library/{id}', [BookController::class, 'update'])->name('library.update');
 
 
+
+
+Route::post('/send-announcement', [announcementController::class, 'sendAnnouncement'])->name('send-announcement');
 

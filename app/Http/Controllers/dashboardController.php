@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Member;
 use App\Models\Donation;
 use App\Models\Event;
+use App\Models\Announcement;
 
 class dashboardController extends Controller
 {
@@ -16,6 +17,7 @@ class dashboardController extends Controller
     $totalDonations = Donation::sum('amount'); // Assuming 'Donation' model and 'amount' is the donation field
     $eventsCount = Event::count(); // Assuming 'Event' is the model for your events
     $newMembers = Member::whereMonth('created_at', now()->month)->count(); // New members this month
+    $announcements = Announcement::all();
 
    // Query the number of members added per month
    $members = Member::selectRaw("strftime('%Y', created_at) as year, strftime('%m', created_at) as month, COUNT(*) as count")
@@ -50,8 +52,30 @@ $data[] = $member->count;
     });
 
     // Pass the data to the view
-    return view('page.index', compact('totalMembers', 'totalDonations', 'eventsCount', 'newMembers','labels', 'data', 'calendarEvents'));
+    return view('page.index', compact('totalMembers', 'totalDonations', 'eventsCount', 'newMembers','labels', 'data', 'calendarEvents','announcements'));
 }
 
+ public function store(Request $request)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'date' => 'required|date',
+        'time' => 'required',
+        'location' => 'required|string|max:255',
+    ]);
+
+    // Create and save the event
+    Event::create([
+        'name' => $request->input('name'),
+        'date' => $request->input('date'),
+        'time' => $request->input('time'),
+        'location' => $request->input('location'),
+        'status' => 'Not Published', // Default status
+    ]);
+
+    // Redirect or return a response
+    return redirect()->route('events.dashboard');
+}
 
 }
