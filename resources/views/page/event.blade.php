@@ -43,14 +43,6 @@
                         <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                <button class="btn btn-primary py-0" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <!-- Notifications -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -86,11 +78,16 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                    <a class="dropdown-item" href="{{Route('profile')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
+                                    <a class="dropdown-item" href="{{Route('profile.index')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Settings</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>Activity log</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Logout</a>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-lg px-4 py-2 shadow-sm border-0 rounded-pill text-danger fw-semibold hover-shadow bg-transparent">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         </ul>
@@ -99,10 +96,26 @@
 
             <!-- Event Overview Section -->
             <h2 class="mb-3">Event Overview</h2>
-            <div class="d-flex justify-content-between mb-3 " id="main">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Add New Event</button>
-                <input type="text" class="form-control w-25" placeholder="Search events">
+            <div class="d-flex align-items-center justify-content-between mb-4 p-3 bg-light rounded shadow-sm" id="main">
+                <!-- Add New Event Button -->
+                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#eventModal">
+                    <i class="fas fa-plus me-2"></i> Add New Event
+                </button>
+
+                <!-- Search Events Input -->
+                <form class="d-flex align-items-center" method="GET" action="{{ route('event.search') }}">
+                    <div class="input-group">
+                        <input type="text" name="search"
+                               class="form-control border-end-0 rounded-start"
+                               placeholder="Search events..."
+                               value="{{ request('search') }}">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
             </div>
+
             <div style="max-height: 400px; overflow-y: auto;">
                 <table class="table table-hover">
                     <thead>
@@ -127,7 +140,6 @@
                                 <td>
                                     <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">Edit</button>
                                     <button class="btn btn-sm btn-danger">Delete</button>
-                                    <button class="btn btn-sm btn-success publish-button">Publish</button> <!-- New Publish button -->
                                 </td>
                             </tr>
                         @endforeach
@@ -162,6 +174,14 @@
                                 <div class="mb-3">
                                     <label for="eventLocation" class="form-label">Location</label>
                                     <input type="text" class="form-control" name="location" id="eventLocation" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bookImage" class="form-label">Event Image</label>
+                                    <input type="file" class="form-control" id="bookImage" name="bookImage" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea name="description" id="" cols="30" rows="10"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </form>

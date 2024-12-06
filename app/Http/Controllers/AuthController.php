@@ -25,6 +25,8 @@ class authController extends Controller
             'last_name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'phone' => 'string|max:10|unique:users|nullable',
+            'address' => 'string|max:255|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -36,6 +38,8 @@ class authController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'phone'=>$request->phone,
+            'address'=>$request->address,
         ]);
 
         return redirect()->route('login');
@@ -75,7 +79,7 @@ class authController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect to the login page or home
-        return redirect('login');
+        return redirect('/');
     }
 
 }

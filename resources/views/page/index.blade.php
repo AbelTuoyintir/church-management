@@ -95,11 +95,11 @@
                             <li class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                    <a class="dropdown-item" href="{{Route('profile')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
+                                    <a class="dropdown-item" href="{{Route('profile.index')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Settings</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>Activity log</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Logout</a>
+                                    <a class="dropdown-item" href="{{Route('logout')}}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Logout</a>
                                 </div>
                             </li>
                         </ul>
@@ -213,7 +213,7 @@
                                             <p class="h5">Add or edit members, track their details</p>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="{{('Membership.store')}}" class="btn btn-primary">Go to Members</a>
+                                            <a href="/admin/members" class="btn btn-primary">Go to Members</a>
                                         </div>
                                     </div>
                                 </div>
@@ -229,7 +229,7 @@
                                             <p class="h5">Create, view, and manage events</p>
                                         </div>
                                         <div class="col-auto">
-                                            <a href="{{('event.showEvent')}}" class="btn btn-success">Go to Events</a>
+                                            <a href="/admin/events" class="btn btn-success">Go to Events</a>
                                         </div>
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Recent Members</h6>
                                     </div>
-                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
                                         <!-- Table for Recent Members -->
                                         <table class="table table-bordered  table-striped">
                                             <thead>
@@ -254,11 +254,14 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach ($Members as $member )
                                                 <tr>
-                                                    <td>John Doe</td>
-                                                    <td>2024-01-01</td>
-                                                    <td>Active</td>
+                                                    <td>{{$member->first_name}}{{$member->last_name}}</td>
+                                                    <td>{{$member->created_at}}</td>
+                                                    <td>{{$member->status}}</td>
                                                 </tr>
+
+                                                @endforeach
                                                 <!-- Additional rows as needed -->
                                             </tbody>
                                         </table>
@@ -270,7 +273,7 @@
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Upcoming Events</h6>
                                     </div>
-                                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
                                         <!-- Table for Upcoming Events -->
                                         <table class="table table-bordered table-striped">
                                             <thead>
@@ -281,11 +284,13 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                @foreach ($Events as $event )
                                                 <tr>
-                                                    <td>Annual Conference</td>
-                                                    <td>2024-12-10</td>
-                                                    <td>Main Hall</td>
+                                                    <td>{{($event->name)}}</td>
+                                                    <td>{{($event->date)}}</td>
+                                                    <td>{{($event->location)}}</td>
                                                 </tr>
+                                                @endforeach
                                                 <!-- Additional rows as needed -->
                                             </tbody>
                                         </table>
@@ -296,25 +301,40 @@
                             <!-- Right Column: Quick Actions -->
                             <div class="col-lg-4">
                                 <div class="card shadow mb-4">
-                                    <div class="card-header py-3">
-                                        <h6 class="m-0 font-weight-bold text-primary">Announcements And News</h6>
+                                  <div class="card-header py-3">
+                                    <h6 class="m-0 fw-bold text-primary">Announcements And News</h6>
+                                  </div>
+
+                                  <!-- Announcement Card Content -->
+                                  <div style="max-height: 560px; overflow-y: auto; margin : 20px;">
+                                    @foreach ( $announcements as $announcement )
+                                    <div class="announcement-content p-3" style="border: 1px solid rgba(219, 234, 254, 1); border-radius: 0.5rem; padding: 50px">
+                                        <div class="header d-flex align-items-center p-3 gap-3">
+                                          <span class="icon d-flex align-items-center justify-content-center rounded-circle bg-primary text-white p-2">
+                                            <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" style="height: 1rem; width: 1rem;">
+                                              <path clip-rule="evenodd" d="M18 3a1 1 0 00-1.447-.894L8.763 6H5a3 3 0 000 6h.28l1.771 5.316A1 1 0 008 18h1a1 1 0 001-1v-4.382l6.553 3.276A1 1 0 0018 15V3z" fill-rule="evenodd"></path>
+                                            </svg>
+                                          </span>
+                                          <p class="alert fw-semibold text-muted mb-0">New message!</p>
+                                        </div>
+                                        <div></div>
+                                        <div class="announcement-body p-3">
+                                            <h3>{{$announcement->title}}</h3>
+                                          <p class="message text-muted mb-3">
+                                            {{$announcement->message}}
+                                          </p>
+                                          <p class="message text-muted mb-3">
+                                            {{$announcement->created_at}}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    @endforeach
+
+
+                                        </div>
+                                      </div>
                                     </div>
-                                    <div class="card-body" style="max-height: 400px; overflow-y: auto;">
-                                        @if($announcements->isEmpty())
-                                            <p>No announcements available.</p>
-                                        @else
-                                            @foreach($announcements as $announcement)
-                                                <div class="announcement-item">
-                                                    <h5>{{ $announcement->title }}</h5>
-                                                    <p>{{ $announcement->message }}</p>
-                                                    <small class="text-muted">Posted on {{ $announcement->created_at->format('F j, Y, g:i a') }}</small>
-                                                    <hr>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
+
 
 
                             <div class="col-lg-4">

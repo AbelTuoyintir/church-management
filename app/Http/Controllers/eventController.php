@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Event;
 use App\Models\Volunteer;
 
+
 class eventController extends Controller
 {
     //
@@ -15,6 +16,8 @@ class eventController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
     public function store(Request $request)
     {
         // Validate the incoming request data
@@ -23,7 +26,17 @@ class eventController extends Controller
             'date' => 'required|date',
             'time' => 'required',
             'location' => 'required|string|max:255',
+            'bookImage' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'description' => 'nullable|string|max:1080',
         ]);
+
+        // Initialize image path as null
+        $imagePath = null;
+
+        // Handle the image upload if it exists
+        if ($request->hasFile('bookImage')) {
+            $imagePath = $request->file('bookImage')->store('images', 'public');
+        }
 
         // Create and save the event
         Event::create([
@@ -32,11 +45,14 @@ class eventController extends Controller
             'time' => $request->input('time'),
             'location' => $request->input('location'),
             'status' => 'Not Published', // Default status
+            'bookImage' => $imagePath,
+            'description' => $request->input('description'),
         ]);
 
         // Redirect or return a response
         return redirect()->route('event');
     }
+
 
     public function showEvent()
     {
@@ -62,6 +78,19 @@ class eventController extends Controller
         ]);
 
         return redirect()->route('event');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+
+        $events = Event::query()
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', "%{$search}%");
+            });// Paginate if necessary
+
+        return view('page.event', compact('events'));
+
     }
 
 }

@@ -15,6 +15,9 @@ class dashboardController extends Controller
 {   // Fetch data from your models (assuming you have the necessary models set up)
     $totalMembers = Member::count(); // Assuming 'Member' is the model for your members
     $totalDonations = Donation::sum('amount'); // Assuming 'Donation' model and 'amount' is the donation field
+    $Members = Member::all();
+    $Donations = Donation::all();
+    $Events = Event::all();
     $eventsCount = Event::count(); // Assuming 'Event' is the model for your events
     $newMembers = Member::whereMonth('created_at', now()->month)->count(); // New members this month
     $announcements = Announcement::all();
@@ -52,7 +55,7 @@ $data[] = $member->count;
     });
 
     // Pass the data to the view
-    return view('page.index', compact('totalMembers', 'totalDonations', 'eventsCount', 'newMembers','labels', 'data', 'calendarEvents','announcements'));
+    return view('page.index', compact('totalMembers', 'totalDonations', 'eventsCount', 'newMembers','labels', 'data', 'calendarEvents','announcements','Members','Events'));
 }
 
  public function store(Request $request)

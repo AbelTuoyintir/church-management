@@ -34,7 +34,7 @@ class memberFactory extends Factory
             'email' => $this->faker->unique()->safeEmail(), // Ensures unique email
             'phone' => $this->faker->phoneNumber(), // Corrected syntax with ()
             'password' => Hash::make('password'), // Default password, consider using a more secure option
-            'status' => $this->faker->randomElement(['Active', 'Inactive']), // Example status values
+            'status' => $this->faker->randomElement(['active', 'inactive']), // Example status values
         ];
     }
 

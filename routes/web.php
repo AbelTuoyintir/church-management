@@ -3,11 +3,13 @@
 use App\Http\Controllers\authController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\donationController;
+use App\Http\Controllers\profileController;
 use App\Http\Controllers\memberController;
 use App\Http\Controllers\eventController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\rsvpController;
 use App\Http\Controllers\announcementController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -26,7 +28,7 @@ Route::view('/admin/dashboard','page.index')->middleware('auth')->name('index');
 Route::view('/admin/members','page.Membership')->middleware('auth')->name('Membership');
 Route::View('/admin/donations','page.donation')->middleware('auth')->name('donation');
 Route::view('/admin/library','page.library')->middleware('auth')->name('library');
-Route::view('/admin/profile','page.profile')->middleware('auth')->name('profile');
+//Route::view('/admin/profile','page.profile')->middleware('auth')->name('profile');
 Route::view('/admin/events','page.event')->name('event');
 
 
@@ -59,6 +61,7 @@ Route::put('/admin/donations/{id}', [donationController::class, 'update'])->name
 //route for events
 Route::post('/admin/events/store', [eventController::class, 'store'])->name('events.store');
 Route::get('/admin/events', [eventController::class,'showEvent'])->name('event.showEvent');
+Route::get('/admin/events', [eventController::class, 'search'])->name('event.search');
 Route::post('/admin/rsvp/store', [rsvpController::class, 'store'])->name('rsvp.store');
 Route::post('/admin/volunteer/signup', [eventController::class, 'volunteer'])->name('volunteer.volunteer');
 
@@ -73,7 +76,16 @@ Route::delete('/admin/library/{id}', [BookController::class, 'destroy'])->name('
 Route::put('/admin/library/{id}', [BookController::class, 'update'])->name('library.update');
 
 
+Route::get('/admin/profile', [profileController::class, 'index'])->name('profile.index');
+Route::put('/admin/profile/{id}', [profileController::class, 'update'])->name('profile.update');
+
+
+
 
 
 Route::post('/send-announcement', [announcementController::class, 'sendAnnouncement'])->name('send-announcement');
 
+
+
+//views route for users
+Route::get('/user/dashboard', [UserController::class, 'index' ])->name('user-dashboard.index');
