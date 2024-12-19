@@ -49,6 +49,7 @@ Route::post('/admin/members', [memberController::class, 'store'])->name('Members
 Route::delete('/admin/members/{id}', [memberController::class, 'destroy'])->name('Membership.destroy');
 Route::get('/admin/members/edit/{id}', [MemberController::class, 'edit'])->name('Membership.edit');
 Route::put('/admin/members/{id}', [MemberController::class, 'update'])->name('Membership.update');
+Route::get('/admin/search/members', [MemberController::class, 'search'])->name('Membership.search');
 
 
 //donation routes
@@ -57,11 +58,12 @@ Route::delete('/admin/donations/{id}', [DonationController::class, 'destroy'])->
 Route::get('/admin/donations', [donationController::class,'showDonation'])->name('donation.showDonation');
 Route::get('/admin/donations/edit/{id}', [donationController::class, 'edit'])->name('donation.edit');
 Route::put('/admin/donations/{id}', [donationController::class, 'update'])->name('donation.update');
+Route::get('/admin/search/donations', [donationController::class, 'search'])->name('donation.search');
 
 //route for events
 Route::post('/admin/events/store', [eventController::class, 'store'])->name('events.store');
 Route::get('/admin/events', [eventController::class,'showEvent'])->name('event.showEvent');
-Route::get('/admin/events', [eventController::class, 'search'])->name('event.search');
+Route::get('/admin/search/events', [donationController::class, 'search'])->name('events.search');
 Route::post('/admin/rsvp/store', [rsvpController::class, 'store'])->name('rsvp.store');
 Route::post('/admin/volunteer/signup', [eventController::class, 'volunteer'])->name('volunteer.volunteer');
 

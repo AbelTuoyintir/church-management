@@ -58,21 +58,6 @@
                                     <!-- More notifications... -->
                                 </div>
                             </li>
-                            <!-- Messages -->
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                    <h6 class="dropdown-header">Alerts Center</h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3">
-                                            <img class="rounded-circle" src="/assets/img/avatars/avatar4.jpeg">
-                                            <div class="bg-success status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold"><div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div><p class="small text-gray-500 mb-0">Emily Fowler - 58m</p></div>
-                                    </a>
-                                    <!-- More messages... -->
-                                </div>
-                            </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <!-- User Information -->
                             <li class="nav-item dropdown no-arrow">
@@ -95,28 +80,28 @@
                 </nav>
 
             <!-- Event Overview Section -->
-            <h2 class="mb-3">Event Overview</h2>
-            <div class="d-flex align-items-center justify-content-between mb-4 p-3 bg-light rounded shadow-sm" id="main">
+            <div class="px-2 mx-2">
+            <h2 class="mb-3 ">Event Overview</h2>
+            <div class="d-flex align-items-center justify-content-between mb-4 p-3 bg-light rounded" id="main">
                 <!-- Add New Event Button -->
                 <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#eventModal">
                     <i class="fas fa-plus me-2"></i> Add New Event
                 </button>
 
                 <!-- Search Events Input -->
-                <form class="d-flex align-items-center" method="GET" action="{{ route('event.search') }}">
-                    <div class="input-group">
-                        <input type="text" name="search"
-                               class="form-control border-end-0 rounded-start"
-                               placeholder="Search events..."
-                               value="{{ request('search') }}">
-                        <button class="btn btn-primary" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
+                <div class="d-flex justify-content-between">
+                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="{{ route('events.search') }}" method="GET">
+                            <div class="input-group">
+                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..." name="search" value="{{ old('search', $search ?? '') }}" >
+                                <button class="btn btn-primary py-0" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
             </div>
 
-            <div style="max-height: 400px; overflow-y: auto;">
+            <div style="max-height: 400px; overflow-y: auto; px-3">
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -149,7 +134,7 @@
 
 
             <!-- Event Modal for Adding/Editing Events -->
-            <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal fade " id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -191,7 +176,7 @@
             </div>
 
             <!-- RSVP Section -->
-            <div class="section">
+            <div class="section mt-2">
                 <h3>RSVP for Events</h3>
                 <form action="{{ route('rsvp.store') }}" method="POST">
                     @csrf
@@ -232,7 +217,7 @@
             </div>
 
             <!-- Attendance Tracking Section -->
-            <div class="section">
+            <div class="section mt-3">
                 <h3>Attendance Tracking</h3>
                 <table class="table table-bordered">
                     <thead>
@@ -274,6 +259,7 @@
 
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->

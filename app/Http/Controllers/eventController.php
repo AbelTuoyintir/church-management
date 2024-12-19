@@ -60,6 +60,7 @@ class eventController extends Controller
 
         return view("page.event", compact("events")); // Pass as "events"
     }
+    
 
     public function volunteer(Request $request)
     {
@@ -82,15 +83,18 @@ class eventController extends Controller
 
     public function search(Request $request)
     {
+        // Retrieve the search query from the request
         $search = $request->input('search');
-
-        $events = Event::query()
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', "%{$search}%");
-            });// Paginate if necessary
-
-        return view('page.event', compact('events'));
-
+    
+        // Query members based on the search term
+        $donations = Donation::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%$search%")
+                         ->orWhere('date', 'like', "%$search%")
+                         ->orWhere('location', 'like', "%$search%"); // Add more fields if needed
+        })->get();
+    
+        // Return the view with the filtered members
+        return view('page.donation', compact('donations', 'search'));
     }
 
 }

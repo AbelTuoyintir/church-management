@@ -57,20 +57,7 @@
                                     </div>
                                 </li>
                                 <!-- Messages -->
-                                <li class="nav-item dropdown no-arrow mx-1">
-                                    <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">Alerts Center</h6>
-                                        <a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3">
-                                                <img class="rounded-circle" src="/assets/img/avatars/avatar4.jpeg">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold"><div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div><p class="small text-gray-500 mb-0">Emily Fowler - 58m</p></div>
-                                        </a>
-                                        <!-- More messages... -->
-                                    </div>
-                                </li>
+                               
                                 <div class="d-none d-sm-block topbar-divider"></div>
                                 <!-- User Information -->
                                 <li class="nav-item dropdown no-arrow">
@@ -95,6 +82,16 @@
         <div class="container-fluid">
             <div class="d-sm-flex justify-content-between align-items-center mb-4">
                 <h3 class="text-dark mb-0">Donation Management</h3>
+                <div class="d-flex justify-content-between">
+                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="{{ route('donation.search') }}" method="GET">
+                            <div class="input-group">
+                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..." name="search" value="{{ old('search', $search ?? '') }}" >
+                                <button class="btn btn-primary py-0" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDonationModal">
                     <i class="fas fa-plus fa-sm text-white-50"></i> Add Donation
                 </button>
@@ -126,7 +123,6 @@
                             <tbody>
                                 @foreach($donations as $donation)
                                 <tr>
-                                    <td>{{ $donation->id }}</td>
                                     <td>{{ $donation->name }}</td>
                                     <td>{{ $donation->email }}</td>
                                     <td>{{ $donation->amount }}</td>
