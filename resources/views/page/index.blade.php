@@ -93,7 +93,7 @@
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <!-- User Information -->
                             <li class="nav-item dropdown no-arrow">
-                                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
+                                s
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
                                     <a class="dropdown-item" href="{{Route('profile.index')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Settings</a>
@@ -107,11 +107,11 @@
                 </nav>
 
                 <!-- Main Content -->
-                <div class="container-fluid mt-4">
-                    <!-- Top Row: Quick Metrics Cards (Rearranged) -->
+                <div class="container-fluid mt-4 mb-4">
+                    <!-- Top Row: Quick Metrics Cards (Horizontal Layout) -->
                     <div class="row">
-                        <!-- Quick Metrics Cards (Total Members, Donations, Events Count, New Members) -->
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <!-- Quick Metrics Cards -->
+                        <div class="col-xl-3 col-md-6">
                             <div class="card border-left-primary shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -127,7 +127,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card border-left-success shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -143,7 +143,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -159,7 +159,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="col-xl-3 col-md-6">
                             <div class="card border-left-warning shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -175,6 +175,8 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
 
                     <!-- Charts Row -->
                     <div class="row">

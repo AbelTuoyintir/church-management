@@ -3,6 +3,7 @@
 use App\Http\Controllers\authController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\donationController;
+use App\Http\Controllers\financeController;
 use App\Http\Controllers\profileController;
 use App\Http\Controllers\memberController;
 use App\Http\Controllers\eventController;
@@ -91,3 +92,11 @@ Route::post('/send-announcement', [announcementController::class, 'sendAnnouncem
 
 //views route for users
 Route::get('/user/dashboard', [UserController::class, 'index' ])->name('user-dashboard.index');
+
+
+// API to store a transaction
+Route::post('/user/finance', [financeController::class, 'store'])->name('finance.store');
+
+// API to fetch all transactions
+Route::get('/user/finance', [financeController::class, 'index'])->name('finance.index');
+

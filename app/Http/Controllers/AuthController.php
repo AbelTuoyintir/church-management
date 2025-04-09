@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\User;
+use App\Models\Member;
+use App\Models\Donation;
+use App\Models\Event;
+use App\Models\Announcement;
+
 use Illuminate\Support\Facades\Auth;
 
 
@@ -47,6 +52,7 @@ class authController extends Controller
 
     public function login(Request $request)
     {
+
         // Validate login credentials
         $validator = Validator::make($request->all(), [
             'email' => 'required|string|email',
@@ -59,9 +65,67 @@ class authController extends Controller
 
         // Attempt to authenticate the user
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // Redirect to the intended page or dashboard
-            return redirect()->route('dashboard'); // replace 'dashboard' with your intended route
+            // Retrieve the authenticated user
+            $user = Auth::user();
+
+            // Fetch additional data required for the page.index view
+            $totalMembers = Member::count();
+            $totalDonations = Donation::sum('amount');
+            $eventsCount = Event::count();
+            $newMembers = Member::whereMonth('created_at', now()->month)->count();
+            $announcements = Announcement::all();
+            $Members = Member::all(); // Fetch all members
+            $Donations = Donation::all(); // Fetch all donations
+            $Events = Event::all(); // Fetch all events
+
+                        // Query the number of members added per month
+                $members = Member::selectRaw("strftime('%Y', created_at) as year, strftime('%m', created_at) as month, COUNT(*) as count")
+                ->groupBy('year', 'month')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
+
+            $labels = [];
+            $data = [];
+
+            foreach ($members as $member) {
+                // Prepare the labels (months) and data (member counts)
+                $labels[] = $member->year . '-' . str_pad($member->month, 2, '0', STR_PAD_LEFT);
+                $data[] = $member->count;
+            }
+
+            // Query events for the current month
+            $events = Event::whereMonth('date', now()->month)
+                ->whereYear('date', now()->year)
+                ->get();
+
+            // Format events for FullCalendar
+            $calendarEvents = $events->map(function ($event) {
+                return [
+                    'title' => $event->name, // Assuming `name` is the event title
+                    'start' => $event->date, // Assuming `date` is the start date
+                    'end' => $event->end_date, // If you have an `end_date` column
+                ];
+            });
+
+
+            // Return the view with all necessary data
+            return view('page.index', compact(
+                'user',
+                'totalMembers',
+                'totalDonations',
+                'eventsCount',
+                'newMembers',
+                'Members',
+                'announcements',
+                'Donations',
+                'Events',
+                'labels',
+                'data',
+                'calendarEvents',
+            ));
         }
+
 
         // Authentication failed, redirect back with error
         return redirect()->back()->withErrors(['loginError' => 'Invalid email or password'])->withInput();
