@@ -19,7 +19,9 @@ class CreateEventsTable extends Migration
             $table->date('date');   // Event Date
             $table->time('time');   // Event Time
             $table->string('location'); // Event Location
-            $table->string('status')->default('Not Published'); // Event Status with default value
+            $table->string('status')->default('Not Published');
+            $table->string('image_path')->nullable();
+            $table->string('description')->nullable(); // Event Status with default value
             $table->timestamps();
         });
     }

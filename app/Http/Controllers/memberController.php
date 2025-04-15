@@ -10,9 +10,9 @@ class memberController extends Controller
 {
     public function index()
 {
-    $member = Member::all();
+    $members = Member::all();
     // Or any other query that returns a collection
-    return view('page.Membership', compact('member'));
+    return view('page.Membership', compact('members'));
 
 }
 
@@ -72,4 +72,22 @@ class memberController extends Controller
         // Redirect back with a success message
         return redirect()->route('Membership.index');
     }
+
+    public function search(Request $request)
+    {
+        // Retrieve the search query from the request
+        $search = $request->input('search');
+    
+        // Query members based on the search term
+        $members = Member::when($search, function ($query, $search) {
+            return $query->where('first_name', 'like', "%$search%")
+                         ->orWhere('last_name', 'like', "%$search%")
+                         ->orWhere('email', 'like', "%$search%"); // Add more fields if needed
+        })->get();
+    
+        // Return the view with the filtered members
+        return view('page.Membership', compact('members', 'search'));
+    }
+    
+
 }

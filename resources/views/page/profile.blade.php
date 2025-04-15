@@ -22,8 +22,13 @@
                         <div class="mb-3">
                             <button class="btn btn-primary btn-sm" type="button">Change Photo</button>
                         </div>
-                        <h5 class="text-primary">Valerie Luna</h5>
-                        <p class="text-muted">Church Member</p>
+                        @if (isset($user) && !$members)
+                            <h5 class="text-primary">{{ $user->first_name }} {{ $user->last_name }}</h5>
+                            <p class="text-muted">Admin</p>
+                        @else
+                            <h5 class="text-primary">{{ $members->first_name }} {{ $members->last_name }}</h5>
+                            <p class="text-muted">Church Member</p>
+                        @endif
                         <div class="d-flex justify-content-center">
                             <button class="btn btn-success btn-sm mx-1" type="button">Edit Profile</button>
                             <button class="btn btn-danger btn-sm mx-1" type="button">Delete Account</button>
@@ -56,28 +61,41 @@
                         <h6 class="text-primary fw-bold m-0">User Information</h6>
                     </div>
                     <div class="card-body">
-                        <form>
+                        @foreach ($users as $user)
+                        <form method="POST" action="{{ route('.update', $user->id) }}">
+                            @csrf
+                            @method('PUT') <!-- For updating user information -->
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" value="Valerie Luna" required>
+                                <label for="first_name_{{ $user->id }}" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first_name_{{ $user->id }}" name="first_name" value="{{ $user->first_name }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email address</label>
-                                <input type="email" class="form-control" id="email" value="valerie@example.com" required>
+                                <label for="last_name_{{ $user->id }}" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last_name_{{ $user->id }}" name="last_name" value="{{ $user->last_name }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="phone" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" id="phone" value="+1234567890" required>
+                                <label for="email_{{ $user->id }}" class="form-label">Email Address</label>
+                                <input type="email" class="form-control" id="email_{{ $user->id }}" name="email" value="{{ $user->email }}" required>
                             </div>
                             <div class="mb-3">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" value="123 Church Street, City" required>
+                                <label for="password_{{ $user->id }}" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="password_{{ $user->id }}" name="password" value="{{ $user->password }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone_{{ $user->id }}" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone_{{ $user->id }}" name="phone" value="{{ $user->phone }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address_{{ $user->id }}" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address_{{ $user->id }}" name="address" value="{{ $user->address }}" required>
                             </div>
                             <button type="submit" class="btn btn-primary">Save Changes</button>
                         </form>
+                        @endforeach
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

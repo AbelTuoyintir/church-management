@@ -23,11 +23,11 @@
                 </a>
                 <hr class="sidebar-divider my-0">
                 <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" href="/index.html"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/profile.html"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/table.html"><i class="fas fa-user-tie"></i><span>Members</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/login.html"><i class="fas fa-donate"></i><span>Donations</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="/register.html"><i class="fas fa-calendar"></i><span>Events</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/dashboard"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/members"><i class="fas fa-user"></i><span>Members</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/donations"><i class="fas fa-user-tie"></i><span>Donations</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/library"><i class="fas fa-donate"></i><span>Library</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/admin/events"><i class="fas fa-calendar"></i><span>Events</span></a></li>
                 </ul>
                 <div class="text-center d-none d-md-inline">
                     <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
@@ -43,14 +43,6 @@
                         <button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button">
                             <i class="fas fa-bars"></i>
                         </button>
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ...">
-                                <button class="btn btn-primary py-0" type="button">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                            </div>
-                        </form>
                         <ul class="navbar-nav flex-nowrap ms-auto">
                             <!-- Notifications -->
                             <li class="nav-item dropdown no-arrow mx-1">
@@ -66,31 +58,21 @@
                                     <!-- More notifications... -->
                                 </div>
                             </li>
-                            <!-- Messages -->
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                    <h6 class="dropdown-header">Alerts Center</h6>
-                                    <a class="dropdown-item d-flex align-items-center" href="#">
-                                        <div class="dropdown-list-image me-3">
-                                            <img class="rounded-circle" src="/assets/img/avatars/avatar4.jpeg">
-                                            <div class="bg-success status-indicator"></div>
-                                        </div>
-                                        <div class="fw-bold"><div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div><p class="small text-gray-500 mb-0">Emily Fowler - 58m</p></div>
-                                    </a>
-                                    <!-- More messages... -->
-                                </div>
-                            </li>
                             <div class="d-none d-sm-block topbar-divider"></div>
                             <!-- User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="dropdown-toggle nav-link" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" src="/assets/img/avatars/avatar1.jpeg"></a>
                                 <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                    <a class="dropdown-item" href="{{Route('profile')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
+                                    <a class="dropdown-item" href="{{Route('profile.index')}}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>Profile</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>Settings</a>
                                     <a class="dropdown-item" href="#"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>Activity log</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>Logout</a>
+                                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                                        @csrf
+                                        <button type="submit" class="btn btn-danger btn-lg px-4 py-2 shadow-sm border-0 rounded-pill text-danger fw-semibold hover-shadow bg-transparent">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         </ul>
@@ -98,43 +80,61 @@
                 </nav>
 
             <!-- Event Overview Section -->
-            <h2 class="mb-3">Event Overview</h2>
-            <div class="d-flex justify-content-between mb-3 " id="main">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eventModal">Add New Event</button>
-                <input type="text" class="form-control w-25" placeholder="Search events">
+            <div class="px-2 mx-2">
+            <h2 class="mb-3 ">Event Overview</h2>
+            <div class="d-flex align-items-center justify-content-between mb-4 p-3 bg-light rounded" id="main">
+                <!-- Add New Event Button -->
+                <button class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#eventModal">
+                    <i class="fas fa-plus me-2"></i> Add New Event
+                </button>
+
+                <!-- Search Events Input -->
+                <div class="d-flex justify-content-between">
+                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search" action="{{ route('events.search') }}" method="GET">
+                            <div class="input-group">
+                                <input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..." name="search" value="{{ old('search', $search ?? '') }}" >
+                                <button class="btn btn-primary py-0" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
             </div>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Event Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Location</th>
-                        <th>Status</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Example Event -->
-                    @foreach($events   as $event)
+
+            <div style="max-height: 400px; overflow-y: auto; px-3">
+                <table class="table table-hover">
+                    <thead>
                         <tr>
-                        <td>{{ $event->name }}</td>
-                        <td>{{ $event->date }}</td>
-                        <td>{{ $event->time }}</td>
-                        <td>{{ $event->location }}</td>
-                        <td>{{ $event->status }}</td>
-                        <td>
-                            <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">Edit</button>
-                            <button class="btn btn-sm btn-danger">Delete</button>
-                            <button class="btn btn-sm btn-success publish-button">Publish</button> <!-- New Publish button -->
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                            <th>Event Name</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Example Event -->
+                        @foreach($events as $event)
+                            <tr>
+                                <td>{{ $event->name }}</td>
+                                <td>{{ $event->date }}</td>
+                                <td>{{ $event->time }}</td>
+                                <td>{{ $event->location }}</td>
+                                <td>{{ $event->status }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#eventModal">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
 
             <!-- Event Modal for Adding/Editing Events -->
-            <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
+            <div class="modal fade " id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -160,6 +160,14 @@
                                     <label for="eventLocation" class="form-label">Location</label>
                                     <input type="text" class="form-control" name="location" id="eventLocation" required>
                                 </div>
+                                <div class="mb-3">
+                                    <label for="bookImage" class="form-label">Event Image</label>
+                                    <input type="file" class="form-control" id="bookImage" name="bookImage" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea name="description" id="" cols="30" rows="10"></textarea>
+                                </div>
                                 <button type="submit" class="btn btn-primary">Save</button>
                             </form>
                         </div>
@@ -168,7 +176,7 @@
             </div>
 
             <!-- RSVP Section -->
-            <div class="section">
+            <div class="section mt-2">
                 <h3>RSVP for Events</h3>
                 <form action="{{ route('rsvp.store') }}" method="POST">
                     @csrf
@@ -209,7 +217,7 @@
             </div>
 
             <!-- Attendance Tracking Section -->
-            <div class="section">
+            <div class="section mt-3">
                 <h3>Attendance Tracking</h3>
                 <table class="table table-bordered">
                     <thead>
@@ -252,10 +260,21 @@
             </div>
         </div>
     </div>
+    </div>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+    <script src="{{ asset('assets/js/script.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Add FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script>
         // Toggle sidebar collapse
         document.getElementById('sidebarToggleTop').addEventListener('click', function () {

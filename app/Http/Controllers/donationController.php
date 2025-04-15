@@ -27,10 +27,13 @@ class donationController extends Controller
         return redirect()->route('donation.showDonation');
     }
 
-    public function showDonation(){
+    public function showDonation()
+    {
+        // Fetch all donations
         $donations = Donation::all();
 
-        return view("page.donation", compact("donations"));
+        // Pass the donations data to the view
+        return view('page.donation', compact('donations'));
     }
 
     public function destroy($id)
@@ -66,6 +69,22 @@ class donationController extends Controller
 
         // Redirect back with a success message
         return redirect()->route('donation.showDonation');
+    }
+
+    public function search(Request $request)
+    {
+        // Retrieve the search query from the request
+        $search = $request->input('search');
+    
+        // Query members based on the search term
+        $donations = Donation::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%$search%")
+                         ->orWhere('amount', 'like', "%$search%")
+                         ->orWhere('email', 'like', "%$search%"); // Add more fields if needed
+        })->get();
+    
+        // Return the view with the filtered members
+        return view('page.donation', compact('donations', 'search'));
     }
 
 }
